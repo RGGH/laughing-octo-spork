@@ -1,6 +1,8 @@
 """ 
   Try qdrant 
   https://www.youtube.com/watch?v=LRcZ9pbGnno
+  
+  uncomment on 1st run : client.create_collection 
 """
 
 from qdrant_client import QdrantClient
