@@ -1,11 +1,7 @@
-""" 
-  Try qdrant 
-  https://www.youtube.com/watch?v=LRcZ9pbGnno
-  
-  uncomment on 1st run : client.create_collection 
-"""
 
-from qdrant_client import QdrantClient
+# https://qdrant.tech/documentation/quick-start/
+  
+ from qdrant_client import QdrantClient
 from qdrant_client.http import models
 import numpy as np
 from faker import Faker
@@ -39,25 +35,25 @@ client.retrieve(collection_name=my_collection,
 )
 
 
-fake_something = Faker()
-fsm = fake_something.name(), fake_something.address()
-# print(fsm)
+# fake_something = Faker()
+# fsm = fake_something.name(), fake_something.address()
+# # print(fsm)
 
-payload = []
+# payload = []
 
-for i in range(1_000):
-    payload.append(
-        {
-            "artist" : fake_something.name(),
-            "song" : "".join(fake_something.words()),
-            "url_song" : fake_something.url(),
-            "year" : fake_something.year(),
-            "country" : fake_something.country(),
+# for i in range(1_000):
+#     payload.append(
+#         {
+#             "artist" : fake_something.name(),
+#             "song" : "".join(fake_something.words()),
+#             "url_song" : fake_something.url(),
+#             "year" : fake_something.year(),
+#             "country" : fake_something.country(),
             
-        }
-    )
+#         }
+#     )
 from pprint import pprint
-pprint(payload[:5])
+# pprint(payload[:5])
 
 #
 # client.upsert(
@@ -74,8 +70,47 @@ living = np.random.uniform(low=-1.0, high=1.0, size=(100)).tolist()
 
 #print(living[:4])
 
-res = client.search(collection_name=my_collection, 
-              query_vector=living,
-              limit=10)
+# res = client.search(collection_name=my_collection, 
+#               query_vector=living,
+#               limit=10)
+
+# pprint(res)
+
+
+
+# create a filter
+italy_songs = models.Filter(
+    must=[
+        models.FieldCondition(
+            key="country",
+            match = models.MatchValue(value="Italy")
+        )
+    ]
+)
+
+
+# print("\n", italy_songs)
+
+# # use the filter
+# res = client.search(collection_name=my_collection, 
+#               query_vector=living,
+#               filter=italy_songs,
+#               limit=3)
+
+res=client.recommend(collection_name=my_collection, 
+                query_vector=italy_songs,
+                positive=[222],
+                negative=[17],
+                query_filter=models.Filter(
+                    must=[
+                        models.FieldCondition(
+                            key="country",
+                            match = models.MatchValue(value="Italy")
+                            )
+                        ]
+                    
+                ),
+                limit=5)
 
 pprint(res)
+
