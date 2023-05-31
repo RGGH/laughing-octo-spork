@@ -1,7 +1,7 @@
 
 # https://qdrant.tech/documentation/quick-start/
   
- from qdrant_client import QdrantClient
+from qdrant_client import QdrantClient
 from qdrant_client.http import models
 import numpy as np
 from faker import Faker
